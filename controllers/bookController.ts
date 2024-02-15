@@ -1,10 +1,20 @@
 import Book from '../models/bookModel';
 import { Request, Response } from 'express';
 
+type BookType = {
+  title: string;
+  author: string;
+  genre: string[];
+  pages: number;
+  reviews: { user: string; rating: number; comments: string }[];
+  createdAt: string;
+  updatedAt: NativeDate;
+};
+
 //get single book
 async function getSingleBook(req: Request, res: Response) {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.findById<BookType>(req.params.id);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
